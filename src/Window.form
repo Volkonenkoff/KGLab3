@@ -40,7 +40,11 @@
       </grid>
       <grid id="e3588" binding="display" layout-manager="BorderLayout" hgap="0" vgap="0">
         <constraints>
-          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <minimum-size width="720" height="720"/>
+            <preferred-size width="720" height="720"/>
+            <maximum-size width="720" height="720"/>
+          </grid>
         </constraints>
         <properties>
           <background color="-16777216"/>
@@ -54,7 +58,7 @@
         </border>
         <children/>
       </grid>
-      <grid id="c5167" layout-manager="GridLayoutManager" row-count="7" column-count="1" same-size-horizontally="true" same-size-vertically="true" hgap="-1" vgap="-1">
+      <grid id="c5167" layout-manager="GridLayoutManager" row-count="5" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -72,24 +76,6 @@
               <actionCommand value="Refresh"/>
               <alignmentY value="0.0"/>
               <text value="Обновить"/>
-            </properties>
-          </component>
-          <component id="9d50b" class="javax.swing.JButton" binding="buttonLess">
-            <constraints>
-              <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <actionCommand value="Less"/>
-              <text value="Уменьшить"/>
-            </properties>
-          </component>
-          <component id="effb7" class="javax.swing.JButton" binding="buttonMore">
-            <constraints>
-              <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <actionCommand value="More"/>
-              <text value="Увеличить"/>
             </properties>
           </component>
           <component id="79860" class="javax.swing.JLabel">
