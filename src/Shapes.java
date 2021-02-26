@@ -5,13 +5,15 @@ public class Shapes {
     Dot d2;
     Dot d3;
     Dot d4;
+    Color sColor;
 
-    Shapes(Dot d1, Dot d2, Dot d3, Dot d4)
+    Shapes(Dot d1, Dot d2, Dot d3, Dot d4, Color sColor)
     {
         this.d1=d1;
         this.d2=d2;
         this.d3=d3;
         this.d4=d4;
+        this.sColor=sColor;
     }
 
     public void rotation(){
@@ -127,5 +129,9 @@ public class Shapes {
         d4.x=res[3][0];
         d4.y=res[3][1];
         d4.z=res[3][2];
+    }
+    public void drawColor()
+    {
+
     }
 }

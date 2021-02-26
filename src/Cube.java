@@ -10,27 +10,27 @@ public class Cube {
         shapesArray.add(new Shapes(new Dot(-1,1,1),
                 new Dot(1,1,1),
                 new Dot(1,-1,1),
-                new Dot(-1,-1,1)));
+                new Dot(-1,-1,1), Color.WHITE));
         shapesArray.add(new Shapes(new Dot(1,1,1),
                 new Dot(1,1,-1),
                 new Dot(1,-1,-1),
-                new Dot(1,-1,1)));
+                new Dot(1,-1,1),Color.CYAN));
         shapesArray.add(new Shapes(new Dot(1,1,-1),
                 new Dot(-1,1,-1),
                 new Dot(-1,-1,-1),
-                new Dot(1,-1,-1)));
+                new Dot(1,-1,-1),Color.RED));
         shapesArray.add(new Shapes(new Dot(-1,1,-1),
                 new Dot(-1,1,1),
                 new Dot(-1,-1,1),
-                new Dot(-1,-1,-1)));
+                new Dot(-1,-1,-1),Color.GREEN));
         shapesArray.add(new Shapes(new Dot(1,1,1),
                 new Dot(1,1,-1),
                 new Dot(-1,1,-1),
-                new Dot(-1,1,1)));
+                new Dot(-1,1,1),Color.ORANGE));
         shapesArray.add(new Shapes(new Dot(1,-1,1),
                 new Dot(1,-1,-1),
                 new Dot(-1,-1,-1),
-                new Dot(-1,-1,1)));
+                new Dot(-1,-1,1),Color.YELLOW));
     }
     public void CubePointOfView()
     {

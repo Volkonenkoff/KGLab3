@@ -35,7 +35,13 @@ public class Window extends JFrame {
         rotationAngle.addChangeListener(e->{
             rotationAngle.setToolTipText(String.valueOf(rotationAngle.getValue())+" °");
         });
-
+        newAxis= new Axis(new Dot (0,0,0),new Dot(0,0,0));
+        aX.setText(String.valueOf(newAxis.A.x));
+        aY.setText(String.valueOf(newAxis.A.y));
+        aZ.setText(String.valueOf(newAxis.A.z));
+        bX.setText(String.valueOf(newAxis.B.x));
+        bY.setText(String.valueOf(newAxis.B.y));
+        bZ.setText(String.valueOf(newAxis.B.z));
         X=new Axis(new Dot(0,0,0),
                 new Dot(1,0,0));
 
@@ -51,12 +57,12 @@ public class Window extends JFrame {
               drawing2D.setColor(Color.BLACK);
               drawing2D.fillRect(0, 0, 720, 720);
               drawing2D.translate(360, 360);
-              drawing2D.setColor(Color.WHITE);
+              drawing2D.setColor(Color.DARK_GRAY);
 
               CubeFigure=new Cube();
 
               Path2D path = new Path2D.Double();
-
+              Path2D axisPath = new Path2D.Double();
 
               X.rotation();
               X.projection();
@@ -66,29 +72,36 @@ public class Window extends JFrame {
               Z.projection();
 
 
-              path.moveTo(X.A.x,X.A.y);
-              path.lineTo(X.B.x*1000,X.B.y*1000);
-              path.moveTo(Y.A.x,Y.B.y);
-              path.lineTo(Y.B.x*1000,Y.B.y*1000);
-              path.moveTo(Z.A.x,Z.B.y);
-              path.lineTo(Z.B.x*1000,Z.B.y*1000);
-              path.moveTo(0,0);
+              axisPath.moveTo(X.A.x,X.A.y);
+              axisPath.lineTo(X.B.x*500,X.B.y*500);
+              axisPath.lineTo(-X.B.x*500,-X.B.y*500);
+              axisPath.moveTo(Y.A.x,Y.B.y);
+              axisPath.lineTo(Y.B.x*500,Y.B.y*500);
+              axisPath.lineTo(-Y.B.x*500,-Y.B.y*500);
+              axisPath.moveTo(Z.A.x,Z.B.y);
+              axisPath.lineTo(Z.B.x*500,Z.B.y*500);
+              axisPath.lineTo(-Z.B.x*500,-Z.B.y*500);
+              axisPath.moveTo(0,0);
+              axisPath.closePath();
+              drawing2D.draw(axisPath);
+              drawing2D.setColor(Color.RED);
               for (int i=0;i<CubeFigure.shapesArray.size();i++) {
                   Shapes temp=(Shapes)CubeFigure.shapesArray.get(i);
                   temp.rotation();
                   temp.projection();
 
-                  path.moveTo(temp.d1.x*100
-                          , temp.d1.y*100);
+                  path.moveTo(temp.d1.x*50
+                          , temp.d1.y*50);
 
-                  path.lineTo(temp.d2.x*100
-                          , temp.d2.y*100);
+                  path.lineTo(temp.d2.x*50
+                          , temp.d2.y*50);
 
-                  path.lineTo(temp.d3.x*100
-                          , temp.d3.y*100);
+                  path.lineTo(temp.d3.x*50
+                          , temp.d3.y*50);
 
-                  path.lineTo(temp.d4.x*100
-                          , temp.d4.y*100);
+                  path.lineTo(temp.d4.x*50
+                          , temp.d4.y*50);
+
                   path.closePath();
                   drawing2D.draw(path);
               }
