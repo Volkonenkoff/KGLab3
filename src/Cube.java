@@ -32,19 +32,14 @@ public class Cube {
                 new Dot(-1,-1,-1),
                 new Dot(-1,-1,1),Color.YELLOW));
     }
-    public void CubePointOfView()
-    {
 
-        for (int i=0;i<shapesArray.size();i++) {
-            Shapes temp=(Shapes)shapesArray.get(i);
-
-
-
-        }
-    }
     public void RotateByNewAxis()
     {
 
+        for (int i=0;i<this.shapesArray.size();i++) {
+            Shapes temp = (Shapes) this.shapesArray.get(i);
+
+        }
     }
 
 }

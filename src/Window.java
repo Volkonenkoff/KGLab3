@@ -35,7 +35,7 @@ public class Window extends JFrame {
         rotationAngle.addChangeListener(e->{
             rotationAngle.setToolTipText(String.valueOf(rotationAngle.getValue())+" °");
         });
-        newAxis= new Axis(new Dot (0,0,0),new Dot(0,0,0));
+        newAxis= new Axis(new Dot (0,0,0),new Dot(50,0,50));
         aX.setText(String.valueOf(newAxis.A.x));
         aY.setText(String.valueOf(newAxis.A.y));
         aZ.setText(String.valueOf(newAxis.A.z));
@@ -49,6 +49,21 @@ public class Window extends JFrame {
                 new Dot(0,1,0));
         Z=new Axis(new Dot(0,0,0),
                 new Dot(0,0,1));
+
+        X.rotation();
+        X.projection();
+        Y.rotation();
+        Y.projection();
+        Z.rotation();
+        Z.projection();
+        newAxis.rotation();
+        newAxis.projection();
+        CubeFigure=new Cube();
+        for (int i=0;i<CubeFigure.shapesArray.size();i++) {
+            Shapes temp = (Shapes) CubeFigure.shapesArray.get(i);
+            temp.rotation();
+            temp.projection();
+        }
         JPanel Paint = new JPanel()
         {
           public void paintComponent(Graphics drawing)
@@ -59,18 +74,9 @@ public class Window extends JFrame {
               drawing2D.translate(360, 360);
               drawing2D.setColor(Color.DARK_GRAY);
 
-              CubeFigure=new Cube();
-
               Path2D path = new Path2D.Double();
               Path2D axisPath = new Path2D.Double();
-
-              X.rotation();
-              X.projection();
-              Y.rotation();
-              Y.projection();
-              Z.rotation();
-              Z.projection();
-
+              Path2D newAxisPath = new Path2D.Double();
 
               axisPath.moveTo(X.A.x,X.A.y);
               axisPath.lineTo(X.B.x*500,X.B.y*500);
@@ -84,11 +90,15 @@ public class Window extends JFrame {
               axisPath.moveTo(0,0);
               axisPath.closePath();
               drawing2D.draw(axisPath);
+              drawing2D.setColor(Color.CYAN);
+              newAxisPath.moveTo(newAxis.A.x,newAxis.A.y);
+              newAxisPath.lineTo(newAxis.B.x,newAxis.B.y);
+              newAxisPath.closePath();
+              drawing2D.draw(newAxisPath);
               drawing2D.setColor(Color.RED);
               for (int i=0;i<CubeFigure.shapesArray.size();i++) {
                   Shapes temp=(Shapes)CubeFigure.shapesArray.get(i);
-                  temp.rotation();
-                  temp.projection();
+
 
                   path.moveTo(temp.d1.x*50
                           , temp.d1.y*50);
@@ -112,6 +122,28 @@ public class Window extends JFrame {
 
         };
 
+        buttonRefresh.addActionListener(e->{
+            try{
+                if (aX.getText().equals("") || aY.getText().equals("") ||
+                aZ.getText().equals("") || bX.getText().equals("") ||
+                        bY.getText().equals("") || bZ.getText().equals("")
+                )
+                    throw new NullPointerException();
+                newAxis.A.x=Double.parseDouble(aX.getText());
+                newAxis.A.y=Double.parseDouble(aY.getText());
+                newAxis.A.z=Double.parseDouble(aZ.getText());
+                newAxis.B.x=Double.parseDouble(bX.getText());
+                newAxis.B.y=Double.parseDouble(bY.getText());
+                newAxis.B.z=Double.parseDouble(bZ.getText());
+                newAxis.rotation();
+                newAxis.projection();
+                Paint.repaint();
+            } catch(NullPointerException ex)
+            {
+                JOptionPane.showMessageDialog(this,"Пусто поле","Ошибка",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        });
         display.add(Paint);
 
     }
