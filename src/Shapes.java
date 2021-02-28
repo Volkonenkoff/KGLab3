@@ -145,10 +145,10 @@ public class Shapes {
                         1, 0, 0,0
                 },
                 {
-                        0, Math.cos(dSigma), -Math.sin(dSigma),0
+                        0, Math.cos(-dSigma), Math.sin(-dSigma),0
                 },
                 {
-                        0,-Math.sin(dSigma),Math.cos(dSigma),0
+                        0,-Math.sin(-dSigma),Math.cos(-dSigma),0
                 },
                 {
                         0,0,0,1
@@ -199,13 +199,13 @@ public class Shapes {
     public void rotation(){
         double rot[][]={
                 {
-                        0.707107, 0.408248, -0.577353,0
+                        0.925820 , 0.133631 , - 0.353553,0
                 },
                 {
-                        0, 0.816497, 0.577353,0
+                        0, 0.935414 , 0.353553,0
                 },
                 {
-                        0.707107,-0.408248,0.577353,0
+                        0.377964,-0.327329,0.866025 ,0
                 },
                 {
                         0,0,0,1
@@ -315,8 +315,6 @@ public class Shapes {
     {
 
         double dSigma=sigma*Math.PI/180;
-        double mAlpha=-Math.acos(c[2]/d);
-        double mBeta=-Math.acos(d);
         double exp[][]={
                 {
                         originD1.x, originD1.y, originD1.z, 1
@@ -356,21 +354,21 @@ public class Shapes {
                 {0,0,0,1}
         };
         double Rs[][]= {
-                {-Math.cos(dSigma),Math.sin(dSigma),0,0},
+                {Math.cos(dSigma),Math.sin(dSigma),0,0},
                 {-Math.sin(dSigma),Math.cos(dSigma),0,0},
                 {0,0,1,0},
                 {0,0,0,1}
         };
         double Rx1[][]= {
                 {1,0,0,0},
-                {0,Math.cos(mAlpha),Math.sin(mAlpha),0},
-                {0,-Math.sin(mAlpha),Math.cos(mAlpha),0},
+                {0,c[2]/d,-c[1]/d,0},
+                {0,c[1]/d,c[2]/d,0},
                 {0,0,0,1}
         };
         double Ry1[][]= {
-                {Math.cos(-mBeta),0,-Math.cos(-mBeta),0},
+                {d,0,-c[0],0},
                 {0,1,0,0},
-                {Math.sin(-mBeta),0,Math.cos(-mBeta),0},
+                {c[0],0,d,0},
                 {0,0,0,1}
         };
         double temp1[][]=new double[4][4];

@@ -35,6 +35,11 @@ public class Window extends JFrame {
         rotationAngle.setToolTipText(String.valueOf(rotationAngle.getValue())+" °");
 
         CubeFigure=new Cube();
+        for (int i=0;i<CubeFigure.shapesArray.size();i++) {
+            Shapes temp = (Shapes) CubeFigure.shapesArray.get(i);
+            temp.rotation();
+            temp.projection();
+        }
 
 
 
@@ -88,29 +93,27 @@ public class Window extends JFrame {
               axisPath.closePath();
               drawing2D.draw(axisPath);
               drawing2D.setColor(Color.CYAN);
-              newAxisPath.moveTo(newAxis.A.x*500,newAxis.A.y*500);
-              newAxisPath.lineTo(newAxis.B.x*500,newAxis.B.y*500);
+              newAxisPath.moveTo(newAxis.A.x,newAxis.A.y);
+              newAxisPath.lineTo(newAxis.B.x,newAxis.B.y);
               newAxisPath.closePath();
               drawing2D.draw(newAxisPath);
               drawing2D.setColor(Color.RED);
               for (int i=0;i<CubeFigure.shapesArray.size();i++) {
                   Shapes temp=(Shapes)CubeFigure.shapesArray.get(i);
 
+                  path.moveTo(temp.d1.x
+                          , temp.d1.y);
 
-                  path.moveTo(temp.d1.x*50
-                          , temp.d1.y*50);
+                  path.lineTo(temp.d2.x
+                          , temp.d2.y);
 
-                  path.lineTo(temp.d2.x*50
-                          , temp.d2.y*50);
+                  path.lineTo(temp.d3.x
+                          , temp.d3.y);
 
-                  path.lineTo(temp.d3.x*50
-                          , temp.d3.y*50);
-
-                  path.lineTo(temp.d4.x*50
-                          , temp.d4.y*50);
-                  path.lineTo(temp.d1.x*50
-                          , temp.d1.y*50);
-
+                  path.lineTo(temp.d4.x
+                          , temp.d4.y);
+                  path.lineTo(temp.d1.x
+                          , temp.d1.y);
 
 
               }
@@ -128,9 +131,9 @@ public class Window extends JFrame {
                         bY.getText().equals("") || bZ.getText().equals("")
                 )
                     throw new NullPointerException();
-                if (Math.abs(Double.parseDouble(aX.getText()))>1  || Math.abs(Double.parseDouble(aY.getText()))>1  ||
-                        Math.abs(Double.parseDouble(aZ.getText()))>1 || Math.abs(Double.parseDouble(bX.getText()))>1  ||
-                        Math.abs(Double.parseDouble(bY.getText()))>1  || Math.abs(Double.parseDouble(bZ.getText()))>1
+                if (Math.abs(Double.parseDouble(aX.getText()))>250  || Math.abs(Double.parseDouble(aY.getText()))>250  ||
+                        Math.abs(Double.parseDouble(aZ.getText()))>250 || Math.abs(Double.parseDouble(bX.getText()))>250  ||
+                        Math.abs(Double.parseDouble(bY.getText()))>250  || Math.abs(Double.parseDouble(bZ.getText()))>250
                 )
                     throw new IllegalArgumentException();
                 if (Double.parseDouble(aX.getText())==Double.parseDouble(bX.getText())  &&
@@ -159,7 +162,7 @@ public class Window extends JFrame {
                         JOptionPane.ERROR_MESSAGE);
             }
             catch (IllegalArgumentException ex){
-                JOptionPane.showMessageDialog(this,"Точки должны быть от -1.0 до 1.0",
+                JOptionPane.showMessageDialog(this,"Точки должны быть от -250.0 до 250.0",
                         "Ошибка",
                         JOptionPane.ERROR_MESSAGE);
             }
