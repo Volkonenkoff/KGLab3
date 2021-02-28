@@ -30,12 +30,14 @@ public class Window extends JFrame {
         this.setResizable(false);
         this.setTitle("КГ №1 Вариант 6");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        rotationAngle.setValue(0);
+        newAxis= new Axis(new Dot (0,0,0),new Dot(1,0,0));
+
         rotationAngle.setToolTipText(String.valueOf(rotationAngle.getValue())+" °");
-        rotationAngle.addChangeListener(e->{
-            rotationAngle.setToolTipText(String.valueOf(rotationAngle.getValue())+" °");
-        });
-        newAxis= new Axis(new Dot (0,0,0),new Dot(50,0,50));
+
+        CubeFigure=new Cube();
+
+
+
         aX.setText(String.valueOf(newAxis.A.x));
         aY.setText(String.valueOf(newAxis.A.y));
         aZ.setText(String.valueOf(newAxis.A.z));
@@ -58,12 +60,7 @@ public class Window extends JFrame {
         Z.projection();
         newAxis.rotation();
         newAxis.projection();
-        CubeFigure=new Cube();
-        for (int i=0;i<CubeFigure.shapesArray.size();i++) {
-            Shapes temp = (Shapes) CubeFigure.shapesArray.get(i);
-            temp.rotation();
-            temp.projection();
-        }
+
         JPanel Paint = new JPanel()
         {
           public void paintComponent(Graphics drawing)
@@ -91,8 +88,8 @@ public class Window extends JFrame {
               axisPath.closePath();
               drawing2D.draw(axisPath);
               drawing2D.setColor(Color.CYAN);
-              newAxisPath.moveTo(newAxis.A.x,newAxis.A.y);
-              newAxisPath.lineTo(newAxis.B.x,newAxis.B.y);
+              newAxisPath.moveTo(newAxis.A.x*500,newAxis.A.y*500);
+              newAxisPath.lineTo(newAxis.B.x*500,newAxis.B.y*500);
               newAxisPath.closePath();
               drawing2D.draw(newAxisPath);
               drawing2D.setColor(Color.RED);
@@ -111,9 +108,11 @@ public class Window extends JFrame {
 
                   path.lineTo(temp.d4.x*50
                           , temp.d4.y*50);
+                  path.lineTo(temp.d1.x*50
+                          , temp.d1.y*50);
 
-                  path.closePath();
-                  drawing2D.draw(path);
+
+
               }
               path.closePath();
 
@@ -129,23 +128,60 @@ public class Window extends JFrame {
                         bY.getText().equals("") || bZ.getText().equals("")
                 )
                     throw new NullPointerException();
+                if (Math.abs(Double.parseDouble(aX.getText()))>1  || Math.abs(Double.parseDouble(aY.getText()))>1  ||
+                        Math.abs(Double.parseDouble(aZ.getText()))>1 || Math.abs(Double.parseDouble(bX.getText()))>1  ||
+                        Math.abs(Double.parseDouble(bY.getText()))>1  || Math.abs(Double.parseDouble(bZ.getText()))>1
+                )
+                    throw new IllegalArgumentException();
+                if (Double.parseDouble(aX.getText())==Double.parseDouble(bX.getText())  &&
+                        Double.parseDouble(aY.getText())==Double.parseDouble(bY.getText())  &&
+                        Double.parseDouble(aZ.getText())  == Double.parseDouble(bZ.getText())
+                )
+                    throw new IllegalStateException();
                 newAxis.A.x=Double.parseDouble(aX.getText());
                 newAxis.A.y=Double.parseDouble(aY.getText());
                 newAxis.A.z=Double.parseDouble(aZ.getText());
                 newAxis.B.x=Double.parseDouble(bX.getText());
                 newAxis.B.y=Double.parseDouble(bY.getText());
                 newAxis.B.z=Double.parseDouble(bZ.getText());
+                newAxis.originA.x=Double.parseDouble(aX.getText());
+                newAxis.originA.y=Double.parseDouble(aY.getText());
+                newAxis.originA.z=Double.parseDouble(aZ.getText());
+                newAxis.originB.x=Double.parseDouble(bX.getText());
+                newAxis.originB.y=Double.parseDouble(bY.getText());
+                newAxis.originB.z=Double.parseDouble(bZ.getText());
                 newAxis.rotation();
                 newAxis.projection();
                 Paint.repaint();
             } catch(NullPointerException ex)
             {
-                JOptionPane.showMessageDialog(this,"Пусто поле","Ошибка",
+                JOptionPane.showMessageDialog(this,"Пустое поле","Ошибка",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+            catch (IllegalArgumentException ex){
+                JOptionPane.showMessageDialog(this,"Точки должны быть от -1.0 до 1.0",
+                        "Ошибка",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+            catch (IllegalStateException ex){
+                JOptionPane.showMessageDialog(this,"Точки не должны быть одинаковыми",
+                        "Ошибка",
                         JOptionPane.ERROR_MESSAGE);
             }
         });
-        display.add(Paint);
 
+        display.add(Paint);
+        rotationAngle.addChangeListener(e->{
+            rotationAngle.setToolTipText(String.valueOf(rotationAngle.getValue())+" °");
+            if (newAxis.originA.y==0 && newAxis.originA.z==0 && newAxis.originB.y==0 && newAxis.originB.z==0)
+                CubeFigure.RotateByX(rotationAngle.getValue());
+            else if (newAxis.originA.x==0 && newAxis.originA.z==0 && newAxis.originB.x==0 && newAxis.originB.z==0)
+                CubeFigure.RotateByY(rotationAngle.getValue());
+            else if (newAxis.originA.y==0 && newAxis.originA.x==0 && newAxis.originB.y==0 && newAxis.originB.x==0)
+                CubeFigure.RotateByZ(rotationAngle.getValue());
+            else CubeFigure.RotateByNewAxis(newAxis.originA, newAxis.originB, rotationAngle.getValue());
+            Paint.repaint();
+        });
     }
 
 
