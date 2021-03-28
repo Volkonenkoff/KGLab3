@@ -5,11 +5,10 @@ public class Axis {
     Dot originB;
     Axis(Dot A,Dot B)
     {
-
         this.A=A;
         this.B=B;
-        this.originA=new Dot(this.A.x,this.A.y,this.A.z);
-        this.originB=new Dot(this.B.x,this.B.y,this.B.z);
+        originA=new Dot(this.A.x,this.A.y,this.A.z);
+        originB=new Dot(this.B.x,this.B.y,this.B.z);
 
     }
     public void rotation(){

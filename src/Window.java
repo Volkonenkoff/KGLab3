@@ -1,11 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Path2D;
-import java.util.ArrayList;
+
 
 
 public class Window extends JFrame {
@@ -23,30 +21,28 @@ public class Window extends JFrame {
     private JPanel A;
     private JPanel B;
     private JPanel rot;
-    protected Line Curve;
-    private Axis X;
-    private Axis Y;
-    private Axis Z;
-    private Axis newAxis;
+    private final Font myFont;
+    protected Cover BezierCover;
+    private final Axis X;
+    private final Axis Y;
+    private final Axis Z;
+    private final Axis newAxis;
+    private Graphics2D drawing2D;
+
     public Window() {
         setContentPane(contentPane);
         this.setMinimumSize(new Dimension(1280, 720));
         this.setMaximumSize(new Dimension(1280, 720));
         this.setResizable(false);
-        this.setTitle("КГ №2 Вариант 7");
+        this.setTitle("КГ №3 Вариант 3");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         newAxis = new Axis(new Dot(0, 0, 0), new Dot(1, 0, 0));
+        myFont=new Font ("Courier New", Font.BOLD, 17);
+        rotationAngle.setToolTipText(rotationAngle.getValue() + " °");
 
-        rotationAngle.setToolTipText(String.valueOf(rotationAngle.getValue()) + " °");
-
-        Curve = new Line(new Dot(-100, -200, 200),
-                new Dot(-50, -100, 125),
-                new Dot(-10, -50, 50),
-                new Dot(0, 0, 0),
-                new Dot(30, 125, 125),
-                new Dot(100, 200, 200));
-        Curve.rotation();
-        Curve.projection();
+        BezierCover=new Cover();
+        BezierCover.rotation();
+        BezierCover.projection();
 
 
         aX.setText(String.valueOf(newAxis.A.x));
@@ -74,17 +70,13 @@ public class Window extends JFrame {
 
         Paint = new JPanel() {
             public void paintComponent(Graphics drawing) {
-                Graphics2D drawing2D = (Graphics2D) drawing;
+                drawing2D = (Graphics2D) drawing;
                 drawing2D.setColor(Color.BLACK);
                 drawing2D.fillRect(0, 0, 720, 720);
                 drawing2D.translate(360, 360);
-                drawing2D.setColor(Color.DARK_GRAY);
 
-                Path2D path = new Path2D.Double();
-                Path2D dotPath = new Path2D.Double();
+
                 Path2D axisPath = new Path2D.Double();
-                Path2D newAxisPath = new Path2D.Double();
-
                 axisPath.moveTo(X.A.x, X.A.y);
                 axisPath.lineTo(X.B.x * 500, X.B.y * 500);
                 axisPath.lineTo(-X.B.x * 500, -X.B.y * 500);
@@ -96,34 +88,52 @@ public class Window extends JFrame {
                 axisPath.lineTo(-Z.B.x * 500, -Z.B.y * 500);
                 axisPath.moveTo(0, 0);
                 axisPath.closePath();
+                drawing2D.setColor(Color.DARK_GRAY);
                 drawing2D.draw(axisPath);
-                drawing2D.setColor(Color.CYAN);
+
+
+                Path2D newAxisPath = new Path2D.Double();
                 newAxisPath.moveTo(newAxis.A.x, newAxis.A.y);
                 newAxisPath.lineTo(newAxis.B.x, newAxis.B.y);
                 newAxisPath.closePath();
-                drawing2D.draw(newAxisPath);
-                drawing2D.setColor(Color.RED);
-                drawing2D.draw(Curve.starting());
+
                 drawing2D.setColor(Color.CYAN);
-                for (int i = 0; i < Curve.Dots.size(); i++) {
-                    drawing2D.drawOval((int) Curve.Dots.get(i).x, (int) Curve.Dots.get(i).y, 5, 5);
-                    dotPath.moveTo(Curve.Dots.get(i).x, Curve.Dots.get(i).y);
+                drawing2D.draw(newAxisPath);
 
 
+                Path2D path = new Path2D.Double();
+                GradientPaint grad = new GradientPaint(-240, -240, Color.CYAN, 140, 140, Color.MAGENTA, true);
+
+                drawing2D.setPaint(grad);
+                drawing2D.draw(BezierCover.starting());
+                drawing2D.setColor(Color.ORANGE);
+                for (int i = 0; i < BezierCover.Dots.length; i++) {
+                    for (int j = 0; j < BezierCover.Dots[0].length; j++) {
+                        drawing2D.drawOval((int) BezierCover.Dots[i][j].x, (int) BezierCover.Dots[i][j].y, 5, 5);
+                    }
                 }
-                drawing2D.setColor(Color.BLUE);
-                double x1, x2, y1, y2;
-                for (int i = 1; i < Curve.Dots.size(); i++) {
-                    x1 = Curve.Dots.get(i - 1).x;
-                    y1 = Curve.Dots.get(i - 1).y;
-                    x2 = Curve.Dots.get(i).x;
-                    y2 = Curve.Dots.get(i).y;
-                    path.moveTo(x1, y1);
-                    path.lineTo(x2, y2);
+                drawing2D.setColor(Color.ORANGE);
+                for (int i = 0; i < BezierCover.Dots.length - 1; i++) {
+                    for (int j = 0; j < BezierCover.Dots[0].length - 1; j++) {
+                        path.moveTo(BezierCover.Dots[i][j].x, BezierCover.Dots[i][j].y);
+                        path.lineTo(BezierCover.Dots[i][j + 1].x, BezierCover.Dots[i][j + 1].y);
+                        path.moveTo(BezierCover.Dots[i][j].x, BezierCover.Dots[i][j].y);
+                        path.lineTo(BezierCover.Dots[i + 1][j].x, BezierCover.Dots[i + 1][j].y);
+                        path.moveTo(BezierCover.Dots[i][3].x, BezierCover.Dots[i][3].y);
+                        path.lineTo(BezierCover.Dots[i + 1][3].x, BezierCover.Dots[i + 1][3].y);
+                        path.moveTo(BezierCover.Dots[5][j].x, BezierCover.Dots[i][3].y);
+                    }
                 }
+                for (int i = 0; i < BezierCover.Dots[0].length - 1; i++) {
+                    path.moveTo(BezierCover.Dots[5][i].x, BezierCover.Dots[5][i].y);
+                    path.lineTo(BezierCover.Dots[5][i + 1].x, BezierCover.Dots[5][i + 1].y);
+                }
+                path.closePath();
+                drawing2D.setFont(myFont);
+                drawing2D.drawString(rotationAngle.getValue() + " °", 290, 290);
                 drawing2D.draw(path);
-            }
 
+            }
         };
 
         buttonRefresh.addActionListener(e -> {
@@ -174,16 +184,16 @@ public class Window extends JFrame {
 
         display.add(Paint);
         rotationAngle.addChangeListener(e -> {
-            rotationAngle.setToolTipText(String.valueOf(rotationAngle.getValue()) + " °");
+            rotationAngle.setToolTipText(rotationAngle.getValue() + " °");
             if (newAxis.originA.y == 0 && newAxis.originA.z == 0 && newAxis.originB.y == 0 && newAxis.originB.z == 0)
-                Curve.rotationX(rotationAngle.getValue());
+                BezierCover.rotationX(rotationAngle.getValue());
             else if (newAxis.originA.x == 0 && newAxis.originA.z == 0 && newAxis.originB.x == 0 && newAxis.originB.z == 0)
-                Curve.rotationY(rotationAngle.getValue());
+                BezierCover.rotationY(rotationAngle.getValue());
             else if (newAxis.originA.y == 0 && newAxis.originA.x == 0 && newAxis.originB.y == 0 && newAxis.originB.x == 0)
-                Curve.rotationZ(rotationAngle.getValue());
-            else Curve.rotateShapeByAxis(newAxis.originA, newAxis.originB, rotationAngle.getValue());
-            Curve.rotation();
-            Curve.projection();
+                BezierCover.rotationZ(rotationAngle.getValue());
+            else BezierCover.rotateShapeByAxis(newAxis.originA, newAxis.originB, rotationAngle.getValue());
+            BezierCover.rotation();
+            BezierCover.projection();
             Paint.repaint();
         });
         Paint.addMouseMotionListener(new Mouse());
@@ -194,54 +204,63 @@ public class Window extends JFrame {
 
         int rad;
         int k=-1;
+        int m=-1;
         boolean beingDragged=false;
+
         @Override
         public void mouseDragged(MouseEvent e)
         {
-            if (beingDragged==true)
+            if (beingDragged)
             {
                 beingDragged=false;
+
             }
 
-            for (int i = 0; i<Curve.Dots.size() && !beingDragged; i++)
+            for (int i = 0; i<BezierCover.Dots.length && !beingDragged ; i++)
             {
-                rad=(int)Math.sqrt((Math.pow(Curve.Dots.get(i).x-(double)(e.getX()-360),2)+Math.pow((Curve.Dots.get(i).y-(double)(e.getY()-360)),2)));
-                if(rad<=40)
+                for (int j = 0; j<BezierCover.Dots[0].length && !beingDragged;j++)
                 {
-                    beingDragged=true;
-                    k=i;
+                    rad=(int)Math.sqrt((Math.pow(BezierCover.Dots[i][j].x-(double)(e.getX()-360),2)+Math.pow((BezierCover.Dots[i][j].y-(double)(e.getY()-360)),2)));
+                    if(rad<=10)
+                    {
+                        beingDragged=true;
+                        k=i;
+                        m=j;
+                    }
                 }
+
             }
-            if (beingDragged==true)
+            if (beingDragged)
             {
+
                 do
                 {
-                    if(Math.abs(Curve.Dots.get(k).x)<360)
+                    if(Math.abs(BezierCover.Dots[k][m].x)<360)
                     {
-                        Curve.Dots.get(k).x = e.getX() - 360;
-                        Curve.originDots.get(k).x=e.getX()-360;
+                        BezierCover.Dots[k][m].x = e.getX() - 360;
+                        BezierCover.originDots[k][m].x=e.getX()-360;
                     }
-                    else if (Curve.Dots.get(k).x>0 && Math.abs(Curve.Dots.get(k).x)>=360){
-                        Curve.Dots.get(k).x=325;
-                        Curve.originDots.get(k).x=325;
+                    else if (BezierCover.Dots[k][m].x>0 && Math.abs(BezierCover.Dots[k][m].x)>=360){
+                        BezierCover.Dots[k][m].x=325;
+                        BezierCover.originDots[k][m].x=325;
                     }
-                    else if (Curve.Dots.get(k).x<0 && Math.abs(Curve.Dots.get(k).x)>=360){
-                        Curve.Dots.get(k).x = -325;
-                        Curve.originDots.get(k).x=-325;
+                    else if (BezierCover.Dots[k][m].x<0 && Math.abs(BezierCover.Dots[k][m].x)>=360){
+                        BezierCover.Dots[k][m].x = -325;
+                        BezierCover.originDots[k][m].x=-325;
                     }
-                    if(Math.abs(Curve.Dots.get(k).y)<360) {
-                        Curve.Dots.get(k).y=e.getY()-360;
-                        Curve.originDots.get(k).y=e.getY()-360;
+                    if(Math.abs(BezierCover.Dots[k][m].y)<360) {
+                        BezierCover.Dots[k][m].y=e.getY()-360;
+                        BezierCover.originDots[k][m].y=e.getY()-360;
                     }
-                    else if (Curve.Dots.get(k).y>0 && Math.abs(Curve.Dots.get(k).y)>=360){
-                        Curve.Dots.get(k).y=325;
-                        Curve.originDots.get(k).y=325;
+                    else if (BezierCover.Dots[k][m].y>0 && Math.abs(BezierCover.Dots[k][m].y)>=360){
+                        BezierCover.Dots[k][m].y=325;
+                        BezierCover.originDots[k][m].y=325;
                     }
-                    else if (Curve.Dots.get(k).y<0 && Math.abs(Curve.Dots.get(k).y)>=360){
-                        Curve.Dots.get(k).y=-325;
-                        Curve.originDots.get(k).y=-325;
+                    else if (BezierCover.Dots[k][m].y<0 && Math.abs(BezierCover.Dots[k][m].y)>=360){
+                        BezierCover.Dots[k][m].y=-325;
+                        BezierCover.originDots[k][m].y=-325;
                     }
-                }while(Math.abs(Curve.Dots.get(k).x)>=360 || Math.abs(Curve.Dots.get(k).y)>=360);
+                }while(Math.abs(BezierCover.Dots[k][m].x)>=360 || Math.abs(BezierCover.Dots[k][m].y)>=360);
 
                 Paint.repaint();
 
@@ -250,7 +269,9 @@ public class Window extends JFrame {
         @Override
         public void mouseMoved(MouseEvent e)
         {
+
         }
+
 
 
     }
