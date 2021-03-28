@@ -1,3 +1,5 @@
+package GraphiLab;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -39,7 +41,9 @@ public class Window extends JFrame {
         newAxis = new Axis(new Dot(0, 0, 0), new Dot(1, 0, 0));
         myFont=new Font ("Courier New", Font.BOLD, 17);
         rotationAngle.setToolTipText(rotationAngle.getValue() + " °");
-
+        A.setFont(new Font ("Courier New", Font.BOLD, 8));
+        B.setFont(new Font ("Courier New", Font.BOLD, 8));
+        rot.setFont(new Font ("Courier New", Font.BOLD, 8));
         BezierCover=new Cover();
         BezierCover.rotation();
         BezierCover.projection();

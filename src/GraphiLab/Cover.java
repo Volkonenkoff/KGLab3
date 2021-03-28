@@ -1,13 +1,14 @@
+package GraphiLab;
+
 import javax.swing.*;
 import java.awt.geom.Path2D;
 import java.util.ArrayList;
 
 public class Cover {
 
-    Dot[][] Dots;
-    Dot[][] originDots;
-    Dot[][] CoverDots;
-    Dot[][] originCoverDots;
+    protected Dot[][] Dots;
+    protected Dot[][] originDots;
+
     Cover(){
         Dots=new Dot[6][4];
         originDots=new Dot[6][4];
@@ -20,20 +21,20 @@ public class Cover {
     }
     public Path2D starting(){
 
-        Path2D Curve = new Path2D.Double();
+        Path2D Cover = new Path2D.Double();
         try {
-            ArrayList<Dot> curvesDots = new ArrayList<>();
+            ArrayList<Dot> coverDots = new ArrayList<>();
 
             for (double t = 0; t <= 1; t += 0.00125)
                 for (double v=0; v <= 1; v +=0.5)
-                    curvesDots.add(buildBezier(t,v));
-            Curve=draw(curvesDots);
+                    coverDots.add(buildBezier(t,v));
+            Cover=draw(coverDots);
 
         }
         catch (RuntimeException ex){
             JOptionPane.showMessageDialog(null,ex.getMessage());
         }
-        return Curve;
+        return Cover;
     }
 
     private Dot buildBezier(double t, double v) {

@@ -1,9 +1,11 @@
+package GraphiLab;
+
 public class Axis {
-    Dot A;
-    Dot B;
-    Dot originA;
-    Dot originB;
-    Axis(Dot A,Dot B)
+    protected Dot A;
+    protected Dot B;
+    protected Dot originA;
+    protected Dot originB;
+    Axis(Dot A, Dot B)
     {
         this.A=A;
         this.B=B;
@@ -12,7 +14,7 @@ public class Axis {
 
     }
     public void rotation(){
-        double rot[][]={
+        double[][] rot ={
                 {
                         0.925820 , 0.133631 , - 0.353553,0
                 },
@@ -26,7 +28,7 @@ public class Axis {
                         0,0,0,1
                 }
         };
-        double exp[][]={
+        double[][] exp ={
                 {
                         A.x, A.y, A.z, 1
                 },
@@ -35,7 +37,7 @@ public class Axis {
                 }
 
         };
-        double res[][]=new double[2][4];
+        double[][] res =new double[2][4];
         for (int i=0;i<exp.length;i++)
         {
             for(int j=0; j<rot[0].length;j++)
@@ -60,7 +62,7 @@ public class Axis {
     }
     public void projection()
     {
-        double rot[][]={
+        double[][] rot ={
                 {
                         1,0,0,0
                 },
@@ -74,7 +76,7 @@ public class Axis {
                         0,0,0,1
                 }
         };
-        double exp[][]={
+        double[][] exp ={
                 {
                         A.x, A.y, A.z, 1
                 },
@@ -82,7 +84,7 @@ public class Axis {
                         B.x,B.y,B.z,1
                 }
         };
-        double res[][]=new double[2][4];
+        double[][] res =new double[2][4];
         for (int i=0;i<exp.length;i++)
         {
             for(int j=0; j<rot[0].length;j++)
