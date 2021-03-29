@@ -135,6 +135,7 @@ public class Window extends JFrame {
                 path.closePath();
                 drawing2D.setFont(myFont);
                 drawing2D.drawString(rotationAngle.getValue() + " °", 290, 290);
+
                 drawing2D.draw(path);
 
             }
@@ -197,7 +198,7 @@ public class Window extends JFrame {
                 BezierCover.rotationZ(rotationAngle.getValue());
             else BezierCover.rotateShapeByAxis(newAxis.originA, newAxis.originB, rotationAngle.getValue());
             BezierCover.rotation();
-            BezierCover.projection();
+
             Paint.repaint();
         });
         Paint.addMouseMotionListener(new Mouse());
@@ -217,7 +218,6 @@ public class Window extends JFrame {
             if (beingDragged)
             {
                 beingDragged=false;
-
             }
 
             for (int i = 0; i<BezierCover.Dots.length && !beingDragged ; i++)
@@ -225,7 +225,7 @@ public class Window extends JFrame {
                 for (int j = 0; j<BezierCover.Dots[0].length && !beingDragged;j++)
                 {
                     rad=(int)Math.sqrt((Math.pow(BezierCover.Dots[i][j].x-(double)(e.getX()-360),2)+Math.pow((BezierCover.Dots[i][j].y-(double)(e.getY()-360)),2)));
-                    if(rad<=10)
+                    if(rad<=17)
                     {
                         beingDragged=true;
                         k=i;
@@ -242,7 +242,7 @@ public class Window extends JFrame {
                     if(Math.abs(BezierCover.Dots[k][m].x)<360)
                     {
                         BezierCover.Dots[k][m].x = e.getX() - 360;
-                        BezierCover.originDots[k][m].x=e.getX()-360;
+                        BezierCover.originDots[k][m].x=BezierCover.Dots[k][m].x;
                     }
                     else if (BezierCover.Dots[k][m].x>0 && Math.abs(BezierCover.Dots[k][m].x)>=360){
                         BezierCover.Dots[k][m].x=325;
@@ -254,7 +254,7 @@ public class Window extends JFrame {
                     }
                     if(Math.abs(BezierCover.Dots[k][m].y)<360) {
                         BezierCover.Dots[k][m].y=e.getY()-360;
-                        BezierCover.originDots[k][m].y=e.getY()-360;
+                        BezierCover.originDots[k][m].y=BezierCover.Dots[k][m].y;
                     }
                     else if (BezierCover.Dots[k][m].y>0 && Math.abs(BezierCover.Dots[k][m].y)>=360){
                         BezierCover.Dots[k][m].y=325;
@@ -265,7 +265,8 @@ public class Window extends JFrame {
                         BezierCover.originDots[k][m].y=-325;
                     }
                 }while(Math.abs(BezierCover.Dots[k][m].x)>=360 || Math.abs(BezierCover.Dots[k][m].y)>=360);
-
+                BezierCover.originDots[k][m].z=0;
+                BezierCover.Dots[k][m].z=0;
                 Paint.repaint();
 
             }

@@ -25,8 +25,8 @@ public class Cover {
         try {
             ArrayList<Dot> coverDots = new ArrayList<>();
 
-            for (double t = 0; t <= 1; t += 0.00125)
-                for (double v=0; v <= 1; v +=0.5)
+            for (double t = 0; t <= 1; t += 0.0025)
+                for (double v=0; v <= 1; v +=0.16)
                     coverDots.add(buildBezier(t,v));
             Cover=draw(coverDots);
 
